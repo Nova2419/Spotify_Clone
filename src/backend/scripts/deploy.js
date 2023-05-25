@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+
 async function main() {
   const toWei = (num) => ethers.utils.parseEther(num.toString())
   let royaltyFee = toWei(0.01);
@@ -9,7 +9,6 @@ async function main() {
   console.log("Deploying contracts with the account:", deployer.address);
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  // deploy contracts here:
   const NFTMarketplaceFactory = await ethers.getContractFactory("MusicNFTMarketplace");
   nftMarketplace = await NFTMarketplaceFactory.deploy(
     royaltyFee,
@@ -20,7 +19,6 @@ async function main() {
 
   console.log("Smart contract address:", nftMarketplace.address)
 
-  // For each contract, pass the deployed contract and name to this function to save a copy of the contract ABI and address to the front end.
   saveFrontendFiles(nftMarketplace, "MusicNFTMarketplace");
 }
 

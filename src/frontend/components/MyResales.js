@@ -12,20 +12,15 @@ export default function MyResales({ contract, account }) {
   const [selected, setSelected] = useState(0)
   const [previous, setPrevious] = useState(null)
   const loadMyResales = async () => {
-    // Fetch resale items from marketplace by quering MarketItemRelisted events with the seller set as the user
+
     let filter = contract.filters.MarketItemRelisted(null, account, null)
     let results = await contract.queryFilter(filter)
-    // Fetch metadata of each nft and add that to item object.
     const listedItems = await Promise.all(results.map(async i => {
-      // fetch arguments from each result
       i = i.args
-      // get uri url from nft contract
       const uri = await contract.tokenURI(i.tokenId)
-      // use uri to fetch the nft metadata stored on ipfs 
       const response = await fetch(uri + ".json")
       const metadata = await response.json()
       const identicon = `data:image/png;base64,${new Identicon(metadata.name + metadata.price, 330).toString()}`
-      // define listed item object
       let purchasedItem = {
         price: i.price,
         itemId: i.tokenId,
@@ -36,10 +31,8 @@ export default function MyResales({ contract, account }) {
       return purchasedItem
     }))
     setListedItems(listedItems)
-    // Fetch sold resale items by quering MarketItemBought events with the seller set as the user.
     filter = contract.filters.MarketItemBought(null, account, null, null)
     results = await contract.queryFilter(filter)
-    // Filter out the sold items from the listedItems
     const soldItems = listedItems.filter(i => results.some(j => i.itemId.toString() === j.args.tokenId.toString()))
     setSoldItems(soldItems)
     setLoading(false)

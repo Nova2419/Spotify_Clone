@@ -81,7 +81,6 @@ contract MusicNFTMarketplace is ERC721("DAppFi", "DAPP"), Ownable {
         emit MarketItemRelisted(_tokenId, msg.sender, _price);
     }
 
-    /* Fetches all the tokens currently listed for sale */
     function getAllUnsoldTokens() external view returns (MarketItem[] memory) {
         uint256 unsoldCount = balanceOf(address(this));
         MarketItem[] memory tokens = new MarketItem[](unsoldCount);
@@ -95,7 +94,6 @@ contract MusicNFTMarketplace is ERC721("DAppFi", "DAPP"), Ownable {
         return (tokens);
     }
 
-    /* Fetches all the tokens owned by the user */
     function getMyTokens() external view returns (MarketItem[] memory) {
         uint256 myTokenCount = balanceOf(msg.sender);
         MarketItem[] memory tokens = new MarketItem[](myTokenCount);
@@ -109,7 +107,6 @@ contract MusicNFTMarketplace is ERC721("DAppFi", "DAPP"), Ownable {
         return (tokens);
     }
 
-    /* Internal function that gets the baseURI initialized in the constructor */
     function _baseURI() internal view virtual override returns (string memory) {
         return baseURI;
     }
